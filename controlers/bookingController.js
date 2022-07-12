@@ -22,18 +22,16 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
     customer_email: req.user.email,
     client_reference_id: req.params.tourID,
-    line_items: [
-      {
-        name: `${tour.name} Tour`,
-        description: tour.summary,
-        images: [
-          `${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`,
-        ],
-        amount: tour.price * 100,
-        currency: 'usd',
-        quantity: 1,
-      },
-    ],
+    metadata: {
+      name: `${tour.name} Tour`,
+      description: tour.summary,
+      images: [
+        `${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`,
+      ],
+      amount: tour.price * 100,
+      currency: 'usd',
+      quantity: 1,
+    },
   });
   console.log(session);
   // 3) Create session as response
@@ -61,8 +59,7 @@ const createBookingCheckout = async (session) => {
 
 exports.webhookCheckout = (req, res, next) => {
   const signature = req.headers['stripe-signature'];
-  console.log(req.body);
-  console.log(req.headers['stripe-signature']);
+
   let event;
   try {
     event = stripe.webhooks.constructEvent(
@@ -70,7 +67,6 @@ exports.webhookCheckout = (req, res, next) => {
       signature,
       process.env.STRIPE_WEBHOOK_SECRET
     );
-    console.log(req.body);
   } catch (err) {
     return res.status(400).send(`Webhook error: ${err.message}`);
   }
