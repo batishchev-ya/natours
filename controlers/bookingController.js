@@ -22,16 +22,18 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
     customer_email: req.user.email,
     client_reference_id: req.params.tourID,
-    metadata: {
-      name: `${tour.name} Tour`,
-      description: tour.summary,
-      images: [
-        `${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`,
-      ],
-      amount: tour.price * 100,
-      currency: 'usd',
-      quantity: 1,
-    },
+    line_items: [
+      {
+        name: `${tour.name} Tour`,
+        description: tour.summary,
+        images: [
+          `${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`,
+        ],
+        amount: tour.price * 100,
+        currency: 'usd',
+        quantity: 1,
+      },
+    ],
   });
   console.log(session);
   // 3) Create session as response
