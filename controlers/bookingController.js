@@ -10,6 +10,7 @@ const AppError = require('../utils/appError');
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 1) Get currently booked tour
   const tour = await Tour.findById(req.params.tourID);
+
   // 2) Create checkout session
   const session = await stripe.checkout.sessions.create({
     expand: ['line_items'],
@@ -34,7 +35,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
       },
     ],
   });
-  // console.log(session);
+  console.log(session);
   // 3) Create session as response
   res.status(200).json({
     status: 'success',
@@ -78,7 +79,6 @@ exports.webhookCheckout = catchAsync(async (req, res, next) => {
         expand: ['line_items'],
       }
     );
-    console.log(sessionObject);
     createBookingCheckout(sessionObject);
   }
   res.status(200).json({ received: true });
