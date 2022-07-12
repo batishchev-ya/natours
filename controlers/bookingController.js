@@ -80,7 +80,7 @@ exports.webhookCheckout = catchAsync(async (req, res, next) => {
         expand: ['line_items'],
       }
     );
-    createBookingCheckout(sessionObject);
+    createBookingCheckout(sessionObject[0]);
   }
   res.status(200).json({ received: true });
 });
