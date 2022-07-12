@@ -28,7 +28,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
 // Implement CORS
-// app.use(cors());
+app.use(cors());
 
 app.options('*', cors());
 // Serving static files
