@@ -8,7 +8,7 @@ const router = express.Router();
 // 1 variant
 router.get(
   '/',
-  bookingController.createBookingCheckout,
+  // bookingController.createBookingCheckout,
   authController.isLoggedIn,
   viewsController.getOverview
 );
@@ -18,11 +18,11 @@ router.get('/signup', authController.isLoggedIn, viewsController.getSignUpForm);
 router.get('/me', authController.protect, viewsController.getAccount);
 router.get('/my-tours', authController.protect, viewsController.getMyTours);
 
-// router.post(
-//   '/submit-user-data',
-//   authController.protect,
-//   viewsController.updateUserData
-// );
+router.post(
+  '/submit-user-data',
+  authController.protect,
+  viewsController.updateUserData
+);
 
 // 2 variant
 // router.get('/me', authController.protect, viewsController.getAccount);
